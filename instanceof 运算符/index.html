@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /**
+         * L 代表 运算符左侧变量
+         * R 代表 运算符右侧变量
+        */
+        function instance_Of(L, R) {
+            // 拿到被判断对象的原型对象
+            let O = R.prototype;
+            // 获取左侧的指针
+            L = L.__proto__;
+            while (true) {
+                // 如果指针 刚好指向 r的原型对象 证明 L 是 O 这条链上
+                if (L === O) return true;
+                // L 遍历到最后都没有找到 R的原型对象，代表 不在同一条链上
+                if (L === null) return false;
+                // 链表遍历手法
+                L = L.__proto__;
+            }
+        }
+
+        // 正常情况
+        function B() { }
+        let b = new B();
+        console.log(b instanceof B); // true
+
+        // 特殊情况
+        function A() {
+            return {};
+        }
+        let a = new A();
+        console.log(a instanceof A); // false; 因为构造函数如果有返回值，new 的实例 就是该返回值，而该实例直接指向 Object，没有指向该构造函数，所以为false；
+    </script>
+</body>
+
+</html>

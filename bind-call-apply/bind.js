@@ -14,10 +14,18 @@ Function.prototype.bind = function (thisArg) {
         };
     // 构造函数不存在prototype 所以也不能被new
     if (this.prototype) {
+        // 中间层 指向 调用bind的对象，就是原来函数本身
         nop.prototype = this.prototype;
     }
-    // 修改绑定函数的原型指向 为了后面的apply绑定
+    // 修改绑定函数的原型指向 为了后面的apply绑定  将bind之后的函数 指向中间层
     bound.prototype = new nop();
-
+ 
     return bound;
 };
+
+let a = function () { console.log(this) };
+let b = { name: 'b' }
+let d = { name: 'd'}
+let c = a.bind(b);
+c();
+new c();

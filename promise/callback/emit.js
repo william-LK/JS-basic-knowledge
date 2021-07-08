@@ -12,7 +12,7 @@ EventEmitter.prototype.on = function (callback) {
 }
 
 EventEmitter.prototype.emit = function () {
-    this._arr.forEach(fn => fn.apply(this,arguments));
+    this._arr.forEach(fn => fn.apply(this, arguments));
 }
 
 let e = new EventEmitter();
@@ -33,3 +33,6 @@ fs.readFile(path.join(__dirname, './age.txt'), 'utf8', function (err, data) {
     if (err) return console.log(err);
     e.emit('age', data);
 });
+
+// 订阅发布模式  -->   同一个类边  订阅发布无关   订阅方   发布方   消息中心  vuex 消息广播
+// 观察者模式 --> 两个类 被观察者同观察者有一定关联   观察者  被观察者  vue 

@@ -2,7 +2,6 @@
 
 let fs = require('fs'); // fileSystem
 let path = require('path');
-let school = {};
 
 function after(times, callback) {
     let result = {};
@@ -22,14 +21,12 @@ fs.readFile(path.join(__dirname, './name.txt'), 'utf8', function (err, data) {
     if (err) return console.log(err);
     console.log(data);
     newFn("name", data);
-    // school.name = data;
 });
 
 fs.readFile(path.join(__dirname, './age.txt'), 'utf8', function (err, data) {
     if (err) return console.log(err);
     console.log(data);
     newFn("age", data);
-    // school.age = data;
 });
 
 // 串行 两个人有关系 上一个人的输出是下一个人的输入

@@ -35,8 +35,40 @@ function Promise(executor) {
     }
 }
 
+// promise2 就是当前then返回的promise
+// x就是当前then中成功或者失败回调的返回结果
+// 因为此方法 可能混着别人逻辑 所以尽可能考虑周全
+function resolvePromise(promise2, x, resolve, reject) {
+    // 对x进行判断 如果x是普通值 直接resolve就可以了
+    // 如果x是一个promise 采用x的状态
+    if (promise2 === x) {
+        return reject(new TypeError('循环引用'));
+    }
+    // 这种情况就有可能x 是一个promise了
+    if (x !== nul && (typeof x === 'object' || typeof x === 'function')) {
+        try {
+            let then = x.then; // 看当前的promise有没有then方法
+            if (typeof then === 'function') { // {then:()=>{}}
+                then.call(x, y => {
+                    resolve(y);
+                }, r => {
+                    reject(r);
+                }); // 用刚才取出的then方法 不要再去取值了 如果再取可能又会发生异常
+            } else {
+                resolve(x);
+            }
+        } catch (error) {
+            reject(error);
+        }
+    } else {
+        resolve(x);
+    }
+}
+
+
 Promise.prototype.then = function (onfulfilled, onrejected) {
     let self = this;
+
     if (self.status === 'fulfilled') {
         onfulfilled(self.value);
     }
